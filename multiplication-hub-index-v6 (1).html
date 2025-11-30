@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>منصة جداول الضرب – مراجعة تفاعلية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{
+      font-family:"Tajawal","Cairo",system-ui,"Segoe UI",Roboto;
+      background:linear-gradient(135deg,#e0f2fe,#e6fffa 50%,#ffffff);
+      min-height:100vh;
+      color:#0f172a;
+    }
+    @keyframes FadeIn{
+      from{opacity:0;transform:translateY(20px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    .fade-in{
+      animation:FadeIn .6s ease-in-out;
+    }
+    .btn-main{
+      padding:0.75rem 2rem;
+      border-radius:1rem;
+      font-size:1.125rem;
+      font-weight:700;
+      box-shadow:0 10px 25px rgba(15,118,178,0.25);
+    }
+    .badge{
+      border-radius:999px;
+      padding:4px 12px;
+      background:#eff6ff;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .dot{
+      width:6px;height:6px;border-radius:999px;background:#94a3b8;display:inline-block;
+    }
+  </style>
+</head>
+<body class="flex flex-col">
+
+  <!-- واجهة الترحيب -->
+  <section id="welcome" class="flex-1 flex items-center justify-center px-4 py-10 fade-in">
+    <div class="max-w-3xl mx-auto bg-white/90 rounded-3xl shadow-2xl p-8 md:p-12 text-center">
+      <!-- الشعار -->
+      <div class="mb-4">
+        <img
+          src="https://j.top4top.io/p_3581mqu6i1.png"
+          alt="شعار ملتقى التعليم التفاعلي"
+          class="mx-auto w-32 h-auto md:w-40"
+          onerror="this.style.display='none';"
+        />
+      </div>
+
+      <div class="mb-4">
+        <span class="badge">
+          <span>🧮</span>
+          <span>منصة جداول الضرب التفاعلية</span>
+        </span>
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-extrabold text-sky-900 mb-4">
+        مرحباً بك في عالم جداول الضرب
+      </h1>
+      <p class="text-lg md:text-xl text-sky-800 mb-6">
+        هنا يستطيع طلابنا و طالباتنا مراجعة جداول الضرب من ٠ إلى ١٠
+        بطريقة ممتعة و منظَّمة في مكان واحد ✨
+      </p>
+      <ul class="text-sm md:text-base text-gray-700 space-y-2 mb-8 text-right md:text-center">
+        <li>✅ واجهة موحدة لكل جداول الضرب</li>
+        <li>✅ الوصول السريع لكل جدول من قائمة منسدلة</li>
+        <li>✅ إمكانية فتح كل جدول داخل المنصة أو في تبويب جديد</li>
+      </ul>
+      <button
+        onclick="goToMain()"
+        class="btn-main bg-sky-500 hover:bg-sky-600 text-white inline-flex items-center gap-3">
+        <span>انطلق الآن</span>
+        <span>🚀</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- الواجهة الداخلية -->
+  <section id="mainApp" class="flex-1 hidden px-4 py-6 fade-in">
+    <div class="max-w-5xl mx-auto">
+
+      <!-- شريط علوي -->
+      <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <img
+            src="https://j.top4top.io/p_3581mqu6i1.png"
+            alt="شعار ملتقى التعليم التفاعلي"
+            class="w-12 h-auto hidden md:block"
+            onerror="this.style.display='none';"
+          />
+          <div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-sky-900">
+              مراجعة جداول الضرب
+            </h2>
+            <p class="text-sm md:text-base text-gray-600 mt-1">
+              اختَر جدول الضرب الذي تريد مراجعته من القائمة، ثم اختر طريقة العرض المناسبة.
+            </p>
+          </div>
+        </div>
+        <button
+          onclick="backToWelcome()"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-sky-200 bg-white hover:bg-sky-50 text-sm md:text-base">
+          <span>العودة للواجهة الترحيبية</span>
+          <span>🏠</span>
+        </button>
+      </header>
+
+      <!-- بطاقة مراجعة جدول الضرب -->
+      <div class="bg-white/95 rounded-3xl shadow-xl p-6 md:p-8 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <button
+              id="reviewBtn"
+              onclick="toggleReviewPanel()"
+              class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold shadow-lg">
+              <span class="text-2xl">📚</span>
+              <span>مراجعة جدول الضرب</span>
+            </button>
+            <p class="text-sm text-gray-600 mt-2">
+              بالضغط على الزر تظهر قائمة منسدلة بجميع جداول الضرب من ٠ إلى ١٠.
+            </p>
+          </div>
+          <div class="text-sm text-gray-600 bg-sky-50 border border-sky-100 rounded-2xl px-4 py-3">
+            <div class="font-bold text-sky-800 mb-1">ملاحظة تربوية 👩‍🏫👨‍🏫</div>
+            <p>يمكن استخدام هذه المنصة في حصص المراجعة، أو كمحطة تعلم مستقلة للطلاب والطالبات.</p>
+          </div>
+        </div>
+
+        <!-- لوحة اختيار الجدول (تظهر/تختفي) -->
+        <div id="reviewPanel" class="mt-6 hidden border-t border-gray-200 pt-4">
+          <div class="grid md:grid-cols-[minmax(0,280px)_minmax(0,1fr)] gap-4 md:gap-6 items-start">
+
+            <!-- القائمة المنسدلة + الأيقونات -->
+            <div>
+              <label for="tableSelect" class="block text-sm font-semibold text-gray-700 mb-2">
+                اختر جدول الضرب المطلوب:
+              </label>
+              <select
+                id="tableSelect"
+                class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400">
+                <option value="">— اختر جدولاً —</option>
+                <option value="https://123456789fh.github.io/0F/">جدول صفر × (٠)</option>
+                <option value="https://123456789fh.github.io/1F/">جدول ١ × (١)</option>
+                <option value="https://123456789fh.github.io/2F/">جدول ٢ × (٢)</option>
+                <option value="https://123456789fh.github.io/3F/">جدول ٣ × (٣)</option>
+                <option value="https://123456789fh.github.io/4F/">جدول ٤ × (٤)</option>
+                <option value="https://123456789fh.github.io/5F/">جدول ٥ × (٥)</option>
+                <option value="https://123456789fh.github.io/6F/">جدول ٦ × (٦)</option>
+                <option value="https://123456789fh.github.io/7F/">جدول ٧ × (٧)</option>
+                <option value="https://123456789fh.github.io/8F/">جدول ٨ × (٨)</option>
+                <option value="https://123456789fh.github.io/9F/">جدول ٩ × (٩)</option>
+                <option value="https://123456789fh.github.io/10/">جدول ١٠ × (١٠)</option>
+              </select>
+
+              <div class="mt-3 flex flex-wrap gap-2">
+                <button
+                  onclick="showInFrame()"
+                  class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-sm font-semibold">
+                  <span>👁️</span>
+                  <span>عرض داخل المنصة</span>
+                </button>
+                <button
+                  onclick="openInNewTab()"
+                  class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-300 hover:bg-gray-50 text-sm font-semibold">
+                  <span>🧾</span>
+                  <span>فتح في تبويب جديد</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- منطقة العرض داخل المنصة -->
+            <div class="border border-sky-100 rounded-2xl bg-sky-50/60 p-3 md:p-4 h-[360px] md:h-[460px] flex flex-col">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-semibold text-sky-900">عرض الجدول داخل المنصة</span>
+                <span class="text-[11px] text-gray-500 flex items-center gap-1">
+                  <span class="dot"></span> منطقة معاينة تفاعلية
+                </span>
+              </div>
+              <div id="framePlaceholder" class="flex-1 flex items-center justify-center text-center text-gray-500 text-sm px-4">
+                اختر جدولاً من القائمة ثم اضغط "عرض داخل المنصة" ليظهر هنا التطبيق التفاعلي لجدول الضرب ✨
+              </div>
+              <iframe
+                id="tableFrame"
+                class="hidden w-full h-full rounded-xl border border-sky-100 bg-white"
+                src=""
+                loading="lazy"
+              ></iframe>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- بطاقات إضافية: اختبار عام + استراتيجيات -->
+      <div class="grid md:grid-cols-2 gap-4 mb-6">
+        <!-- اختبار عام -->
+        <div class="bg-white rounded-2xl shadow-md p-4 flex flex-col justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-sky-900 mb-2">اختبار عام في جداول ١–١٠ 🎯</h3>
+            <p class="text-sm text-gray-600 mb-3">
+              اختبار قصير بعشرة أسئلة عشوائية من جداول ١ إلى ١٠.
+            </p>
+          </div>
+          <button
+            onclick="startQuiz()"
+            class="mt-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold">
+            <span>بدء الاختبار</span>
+            <span>🎲</span>
+          </button>
+        </div>
+
+        <!-- استراتيجيات الحفظ -->
+        <div class="bg-white rounded-2xl shadow-md p-4 flex flex-col">
+          <div>
+            <h3 class="text-lg font-bold text-sky-900 mb-2">استراتيجيات حفظ جداول الضرب 👧🧒</h3>
+            <p class="text-sm text-gray-600 mb-3">
+              أفكار بسيطة تساعد الطلاب والطالبات على تثبيت الجداول.
+            </p>
+          </div>
+          <button
+            onclick="toggleStrategies()"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-500 hover:bg-purple-600 text-white text-sm font-semibold">
+            <span>عرض الاستراتيجيات</span>
+            <span>💡</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- قسم الاختبار العام -->
+      <div id="quizSection" class="bg-white/95 rounded-3xl shadow-xl p-6 md:p-8 mb-6 hidden">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 class="text-xl font-bold text-sky-900">اختبار عام في جداول ١–١٠</h3>
+            <p class="text-sm text-gray-600">
+              سيظهر لك ١٠ أسئلة عشوائية، أجب عن كل سؤال ثم انتقل للسؤال التالي.
+            </p>
+          </div>
+          <div class="text-sm text-gray-700">
+            سؤال <span id="quizProgress">٠ / ٠</span> |
+            الدرجة: <span id="quizScore">٠</span>
+          </div>
+        </div>
+
+        <div class="border border-sky-50 bg-sky-50/60 rounded-2xl p-4 md:p-6">
+          <div id="quizQuestionText" class="text-2xl font-bold text-center text-sky-900 mb-4">
+            —
+          </div>
+          <div class="flex flex-col items-center gap-3">
+            <input
+              id="quizAnswer"
+              type="text"
+              inputmode="numeric"
+              class="border border-gray-300 rounded-xl px-3 py-2 text-center text-lg w-40 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
+              placeholder="أكتب الإجابة"
+            />
+            <button
+              onclick="checkQuizAnswer()"
+              class="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-sm font-semibold">
+              <span>تحقّق من الإجابة</span>
+            </button>
+            <div id="quizFeedback" class="text-sm font-semibold mt-1"></div>
+          </div>
+        </div>
+
+        <div id="quizSummary" class="mt-4 text-center text-sm text-gray-700"></div>
+      </div>
+
+      <!-- قسم استراتيجيات الحفظ -->
+      <div id="strategiesSection" class="bg-white/95 rounded-3xl shadow-xl p-6 md:p-8 mb-6 hidden">
+        <h3 class="text-xl font-bold text-sky-900 mb-3">
+          استراتيجيات حفظ جداول الضرب
+        </h3>
+        <p class="text-sm text-gray-600 mb-3">
+          يمكن للمعلم/ـة اختيار ما يناسب عمر الطلاب وعرضها معهم بشكل قصير في بداية الحصة:
+        </p>
+        <ul class="list-disc pr-5 text-sm text-gray-700 space-y-2 text-right">
+          <li>
+            <b>العدّ المتكرر:</b> مثل ٣، ٦، ٩، ١٢… لجدول ٣، مع طرق إيقاعية أو تصفيق.
+          </li>
+          <li>
+            <b>الربط بالحياة اليومية:</b> مثلاً ٤ × ٥ = ٢٠ يمكن ربطها بـ ٤ أطباق في كل طبق ٥ تمرات.
+          </li>
+          <li>
+            <b>اكتشاف الأنماط:</b> ملاحظة أن نواتج جدول ٥ تنتهي دائماً بـ ٠ أو ٥، وجدول ٩ مجموع أرقامه = ٩.
+          </li>
+          <li>
+            <b>بطاقات أو ألعاب سريعة:</b> بطاقات سؤال/جواب، أو منافسات بسيطة بين المجموعات.
+          </li>
+          <li>
+            <b>التكرار الموزّع:</b> مراجعة الجداول على فترات قصيرة متكررة بدلاً من مرة واحدة طويلة.
+          </li>
+        </ul>
+      </div>
+
+      <!-- تذييل -->
+      <footer class="mt-8 text-center text-xs md:text-sm text-gray-600">
+        تصميم و إعداد: <b>أ/ فاطمة هزازي</b>
+        <span class="dot"></span> ملتقى معلمي ومعلمات الرياضيات
+        <span class="dot"></span> ملتقى التعليم التفاعلي
+      </footer>
+    </div>
+  </section>
+
+  <script>
+    // أرقام عربية
+    const DIG_MAP = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
+    const REV_MAP = {'٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9'};
+    function toArabicDigits(v){ return String(v).replace(/[0-9]/g, d => DIG_MAP[d]); }
+    function fromArabicDigits(v){ return String(v).replace(/[٠-٩]/g, d => REV_MAP[d]); }
+    function parseNumberLoose(s){
+      const cleaned = fromArabicDigits(String(s)).replace(/[^0-9\-]/g,'');
+      const n = parseInt(cleaned,10);
+      return isNaN(n) ? null : n;
+    }
+
+    function goToMain(){
+      document.getElementById('welcome').classList.add('hidden');
+      document.getElementById('mainApp').classList.remove('hidden');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function backToWelcome(){
+      document.getElementById('mainApp').classList.add('hidden');
+      document.getElementById('welcome').classList.remove('hidden');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function toggleReviewPanel(){
+      const panel = document.getElementById('reviewPanel');
+      panel.classList.toggle('hidden');
+    }
+
+    const selectEl = document.getElementById('tableSelect');
+    const frameEl = document.getElementById('tableFrame');
+    const placeholderEl = document.getElementById('framePlaceholder');
+
+    function showInFrame(){
+      const value = selectEl.value;
+      if (!value){
+        alert('يرجى اختيار جدول أولاً من القائمة.');
+        return;
+      }
+      frameEl.src = value;
+      placeholderEl.classList.add('hidden');
+      frameEl.classList.remove('hidden');
+    }
+
+    function openInNewTab(){
+      const value = selectEl.value;
+      if (!value){
+        alert('يرجى اختيار جدول أولاً من القائمة.');
+        return;
+      }
+      window.open(value, '_blank');
+    }
+
+    function toggleStrategies(){
+      const sec = document.getElementById('strategiesSection');
+      sec.classList.toggle('hidden');
+      if (!sec.classList.contains('hidden')) {
+        window.scrollTo({top:sec.offsetTop - 20, behavior:'smooth'});
+      }
+    }
+
+    // حالة الاختبار العام
+    const quizState = {
+      total: 10,
+      current: 0,
+      correct: 0,
+      a: 0,
+      b: 0
+    };
+
+    function startQuiz(){
+      quizState.current = 0;
+      quizState.correct = 0;
+      document.getElementById('quizSection').classList.remove('hidden');
+      document.getElementById('quizSummary').textContent = '';
+      document.getElementById('quizFeedback').textContent = '';
+      nextQuizQuestion();
+      window.scrollTo({top:document.getElementById('quizSection').offsetTop - 20, behavior:'smooth'});
+    }
+
+    function nextQuizQuestion(){
+      quizState.current++;
+      if (quizState.current > quizState.total){
+        showQuizSummary();
+        return;
+      }
+      // اختيار عشوائي من جدول ١ إلى ١٠، والمضروب من ٠ إلى ١٠
+      quizState.a = 1 + Math.floor(Math.random()*10);
+      quizState.b = Math.floor(Math.random()*11);
+
+      const qText = `${quizState.a} × ${quizState.b} = ؟`;
+      document.getElementById('quizQuestionText').textContent = toArabicDigits(qText);
+      document.getElementById('quizProgress').textContent =
+        toArabicDigits(`${quizState.current} / ${quizState.total}`);
+      document.getElementById('quizScore').textContent = toArabicDigits(quizState.correct);
+      document.getElementById('quizAnswer').value = '';
+      document.getElementById('quizFeedback').textContent = '';
+      document.getElementById('quizAnswer').focus();
+    }
+
+    function checkQuizAnswer(){
+      const ansStr = document.getElementById('quizAnswer').value.trim();
+      if (!ansStr){
+        alert('يرجى كتابة الإجابة أولاً.');
+        return;
+      }
+      const userVal = parseNumberLoose(ansStr);
+      if (userVal === null){
+        alert('يرجى كتابة رقم صحيح.');
+        return;
+      }
+      const correctVal = quizState.a * quizState.b;
+      const feedbackEl = document.getElementById('quizFeedback');
+
+      if (userVal === correctVal){
+        quizState.correct++;
+        feedbackEl.textContent = 'أحسنت! إجابة صحيحة 🎉';
+        feedbackEl.className = 'text-sm font-semibold mt-1 text-emerald-700';
+      } else {
+        feedbackEl.textContent =
+          `إجابة غير صحيحة. الناتج الصحيح هو ${toArabicDigits(correctVal)}.`;
+        feedbackEl.className = 'text-sm font-semibold mt-1 text-rose-700';
+      }
+      document.getElementById('quizScore').textContent = toArabicDigits(quizState.correct);
+      setTimeout(nextQuizQuestion, 900);
+    }
+
+    function showQuizSummary(){
+      const summaryEl = document.getElementById('quizSummary');
+      const score = quizState.correct;
+      const total = quizState.total;
+      let msg = '';
+      const percent = Math.round((score/total)*100);
+
+      if (percent >= 80){
+        msg = `نتيجة رائعة! حصلت على ${toArabicDigits(score)} من ${toArabicDigits(total)} (${toArabicDigits(percent)}٪). أحسنت! 🏆`;
+      } else if (percent >= 60){
+        msg = `نتيجة جيدة! حصلت على ${toArabicDigits(score)} من ${toArabicDigits(total)} (${toArabicDigits(percent)}٪). استمر في المراجعة وستصل للأفضل 🌟`;
+      } else {
+        msg = `حصلت على ${toArabicDigits(score)} من ${toArabicDigits(total)} (${toArabicDigits(percent)}٪). لا بأس، أعد المحاولة بعد قليل وستتحسن بإذن الله 💪`;
+      }
+      summaryEl.textContent = msg;
+      document.getElementById('quizQuestionText').textContent = 'انتهى الاختبار.';
+    }
+  </script>
+</body>
+</html>
